@@ -1,17 +1,21 @@
 === Gist for Robots Wordpress Plugin ===
 Contributors: Pedro Elsner
 Requires at least: 1.0
-Tested up to: 1.0
+Tested up to: 3.4.1
 Stable tag: trunk
 Tags: github, gist, shortcode, embed, git, code, script, gisthub
 
-Makes embedding Github.com gists SEO friendily and super awesomely easy.
+Makes embedding Github.com gists SEO friendly and super awesomely easy.
 
 == Description ==
 
 Drop in the embed code from github between the gist shortcode.
 
-[gist]<script src="http://gist.github.com/447298.js?file=github_gist_wordpress_plugin_test.txt"></script>[/gist].
+[gist]<script src="http://gist.github.com/447298.js?file=github_gist_wordpress_plugin_test.txt"></script>[/gist]
+
+or pass the ID and file (optional)
+
+[gist id=447298 file=github_gist_wordpress_plugin_test.txt]
 
 == Installation ==
 
