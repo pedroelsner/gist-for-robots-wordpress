@@ -11,11 +11,11 @@ Makes embedding Github.com gists SEO friendly and super awesomely easy.
 
 Drop in the embed code from github between the gist shortcode.
 
-[gist]<script src="http://gist.github.com/447298.js?file=github_gist_wordpress_plugin_test.txt"></script>[/gist]
+`[gist]<script src="http://gist.github.com/447298.js?file=github_gist_wordpress_plugin_test.txt"></script>[/gist]`
 
 or pass the ID and file (optional)
 
-[gist id=447298 file=github_gist_wordpress_plugin_test.txt]
+`[gist id=447298 file=github_gist_wordpress_plugin_test.txt]`
 
 == Installation ==
 
@@ -27,7 +27,7 @@ or pass the ID and file (optional)
 
 4) Activate the plugin.
 
-5) Use the [gist] shortcode with greatness!
+5) Use the `[gist]` shortcode with greatness!
 
 == Changelog ==
 
