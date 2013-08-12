@@ -40,6 +40,10 @@ function shortcode_gist($atts, $content=null) {
       return 'Gist id: '.$id.' file:'.$file;
     }
 
+	// Simplistic ID validation
+	if ( preg_match( '~([^a-z0-9]+)~', $id ) ) {
+		return 'Invalid Gist ID';
+	}
 
     $html = '<div class="gist-for-robots">';
 
