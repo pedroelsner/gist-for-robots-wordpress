@@ -54,7 +54,7 @@ function shortcode_gist($atts, $content=null) {
     if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'bot' ) !== false ) {
 
         $gist_url = $gist_url_base . '.json';
-        $gist_url .= $file != null ? '?file=' . trim($file) : '';
+        $gist_url .= $file != null ? '?file=' . $file : '';
 
 		$gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
 		// If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
