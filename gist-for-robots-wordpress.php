@@ -33,7 +33,7 @@ function shortcode_gist($atts, $content=null) {
 	}
     $pattern = "/\?file=(\S+)\">/";
     if ($content != null && $file == null & preg_match($pattern, $content, $matches)) {
-	  $file = $matches[1];
+	  $file = sanitize_file_name( $matches[1] );
 	}
 
     if ($id == null && $file == null) {
