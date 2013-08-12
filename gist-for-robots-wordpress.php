@@ -7,7 +7,7 @@ Usage: Drop in the embed code from github between the gist shortcode.
 [gist]<script src="http://gist.github.com/00000.js?file=file.txt"></script>[/gist]
 or
 [gist id=00000 file=file.txt]
-Version: 1.0
+Version: 1.1
 Author: Pedro Elsner
 Author URI: http://pedroelsner.com/
 */
@@ -53,9 +53,15 @@ function shortcode_gist($atts, $content=null) {
         $html .= '<noscript>'.$json['div'].'</noscript>';
     
     } else {
+
+        if ($file == null) {
+            $html .= '<script src="https://gist.github.com/' . $id . '.js"></script>';
+        } else {
         $html .= '<script src="https://gist.github.com/'.$id.'.js?file='.$file.'"></script>';
     }
     
+    }
+
     $html .= '</div>';
     
     return $html;
