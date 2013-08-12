@@ -59,7 +59,7 @@ function shortcode_gist($atts, $content=null) {
 		$gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
 		// If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
 		if ( is_wp_error( $gist_content ) ) {
-			return '<a href="' . esc_url( $gist_url_base ) . '">' . esc_html( $gist_url_base ) . '</a>';
+			return '<a href="' . esc_url( $gist_url ) . '">' . esc_html( $gist_url ) . '</a>';
 		}
 
         $json  = json_decode( $gist_content, true );
