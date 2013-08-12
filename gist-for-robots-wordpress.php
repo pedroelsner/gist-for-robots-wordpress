@@ -45,18 +45,19 @@ function shortcode_gist($atts, $content=null) {
 		return 'Invalid Gist ID';
 	}
 
+	$gist_url_base = 'http://gist.github.com/' . $id;
+
     $html = '<div class="gist-for-robots">';
 
     if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'bot' ) !== false ) {
 
-        $url = 'http://gist.github.com/' . trim($id) . '.json';
-        $url .= $file != null ? '?file=' . trim($file) : '';
+        $gist_url = $gist_url_base . '.json';
+        $gist_url .= $file != null ? '?file=' . trim($file) : '';
 
-		$gist_content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		$gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
 		// If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
 		if ( is_wp_error( $gist_content ) ) {
-			$gist_url = 'http://gist.github.com/' . $id;
-			return '<a href="' . esc_url( $gist_url ) . '">' . esc_html( $gist_url ) . '</a>';
+			return '<a href="' . esc_url( $gist_url_base ) . '">' . esc_html( $gist_url_base ) . '</a>';
 		}
 
         $json  = json_decode( $gist_content, true );
@@ -65,11 +66,11 @@ function shortcode_gist($atts, $content=null) {
 
     } else {
 
-        if ($file == null) {
-            $html .= '<script src="https://gist.github.com/' . $id . '.js"></script>';
-        } else {
-            $html .= '<script src="https://gist.github.com/'.$id.'.js?file='.$file.'"></script>';
+		$gist_url = $gist_url_base . '.js';
+        if ( $file !== null) {
+        	$gist_url .= '?file=' . $file;
         }
+		$html .= '<script src="' . esc_url( $gist_url ) . '"></script>';
 
     }
 
