@@ -48,7 +48,14 @@ function shortcode_gist($atts, $content=null) {
         $url = 'http://gist.github.com/' . trim($id) . '.json';
         $url .= $file != null ? '?file=' . trim($file) : '';
 
-        $json  = json_decode(file_get_contents($url), true);
+		$gist_content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		// If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
+		if ( is_wp_error( $gist_content ) ) {
+			$gist_url = 'http://gist.github.com/' . $id;
+			return '<a href="' . esc_url( $gist_url ) . '">' . esc_html( $gist_url ) . '</a>';
+		}
+
+        $json  = json_decode( $gist_content, true );
         $html .= $json['div'];
         $html .= '<noscript>'.$json['div'].'</noscript>';
 
