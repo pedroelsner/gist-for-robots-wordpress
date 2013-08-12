@@ -42,12 +42,8 @@ function shortcode_gist($atts, $content=null) {
 	  $file = sanitize_file_name( $matches[1] );
 	}
 
-    if ($id == null && $file == null) {
-      return 'Gist id: '.$id.' file:'.$file;
-    }
-
 	// Simplistic ID validation
-	if ( preg_match( '~([^a-z0-9]+)~', $id ) ) {
+	if ( $id == null || preg_match( '~([^a-z0-9]+)~', $id ) ) {
 		return 'Invalid Gist ID';
 	}
 
