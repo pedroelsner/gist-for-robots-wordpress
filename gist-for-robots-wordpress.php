@@ -82,4 +82,4 @@ function shortcode_gist($atts, $content=null) {
 }
 add_shortcode('gist', 'shortcode_gist');
 
-?>
+// EOF
