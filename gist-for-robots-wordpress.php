@@ -27,10 +27,16 @@ function shortcode_gist($atts, $content=null) {
       'file' => null,
     ), $atts));
 
-    $pattern = "/gist.github.com\/(\d+).js/";
+    $pattern = "/gist\.github\.com\/([a-zA-Z0-9-]*)(?:\/?)([a-zA-Z0-9-]*)\.js/";
     if ($content != null && $id == null & preg_match($pattern, $content, $matches)) {
-	  $id = $matches[1];
+    	$has_username = ( ! empty( $matches[2] ) );
+    	if ( $has_username ) {
+    		$id = $matches[1];
+    	} else {
+    		$id = $matches[2];
+    	}
 	}
+
     $pattern = "/\?file=(\S+)\">/";
     if ($content != null && $file == null & preg_match($pattern, $content, $matches)) {
 	  $file = sanitize_file_name( $matches[1] );
