@@ -31,9 +31,9 @@ function shortcode_gist($atts, $content=null) {
     if ($content != null && $id == null & preg_match($pattern, $content, $matches)) {
     	$has_username = ( ! empty( $matches[2] ) );
     	if ( $has_username ) {
-    		$id = $matches[1];
-    	} else {
     		$id = $matches[2];
+    	} else {
+    		$id = $matches[1];
     	}
 	}
 
