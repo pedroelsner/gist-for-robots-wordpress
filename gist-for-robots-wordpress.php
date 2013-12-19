@@ -7,7 +7,7 @@ Usage: Drop in the embed code from github between the gist shortcode.
 [gist]<script src="http://gist.github.com/00000.js?file=file.txt"></script>[/gist]
 or
 [gist id=00000 file=file.txt]
-Version: 1.1
+Version: 1.3
 Author: Pedro Elsner
 Author URI: http://pedroelsner.com/
 */
@@ -29,25 +29,25 @@ function shortcode_gist($atts, $content=null) {
 
     $pattern = "/gist\.github\.com\/([a-zA-Z0-9-]*)(?:\/?)([a-zA-Z0-9-]*)\.js/";
     if ($content != null && $id == null & preg_match($pattern, $content, $matches)) {
-    	$has_username = ( ! empty( $matches[2] ) );
-    	if ( $has_username ) {
-    		$id = $matches[2];
-    	} else {
-    		$id = $matches[1];
-    	}
-	}
+            $has_username = ( ! empty( $matches[2] ) );
+            if ( $has_username ) {
+                    $id = $matches[2];
+            } else {
+                    $id = $matches[1];
+            }
+        }
 
     $pattern = "/\?file=(\S+)\">/";
     if ($content != null && $file == null & preg_match($pattern, $content, $matches)) {
-	  $file = sanitize_file_name( $matches[1] );
-	}
+          $file = sanitize_file_name( $matches[1] );
+        }
 
-	// Simplistic ID validation
-	if ( $id == null || preg_match( '~([^a-z0-9]+)~', $id ) ) {
-		return 'Invalid Gist ID';
-	}
+        // Simplistic ID validation
+        if ( $id == null || preg_match( '~([^a-z0-9]+)~', $id ) ) {
+                return 'Invalid Gist ID';
+        }
 
-	$gist_url_base = 'http://gist.github.com/' . $id;
+        $gist_url_base = 'http://gist.github.com/' . $id;
 
     $html = '<div class="gist-for-robots">';
 
@@ -56,11 +56,11 @@ function shortcode_gist($atts, $content=null) {
         $gist_url = $gist_url_base . '.json';
         $gist_url .= $file != null ? '?file=' . $file : '';
 
-		$gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
-		// If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
-		if ( is_wp_error( $gist_content ) ) {
-			return '<a href="' . esc_url( $gist_url ) . '">' . esc_html( $gist_url ) . '</a>';
-		}
+                $gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
+                // If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
+                if ( is_wp_error( $gist_content ) ) {
+                        return '<a href="' . esc_url( $gist_url ) . '">' . esc_html( $gist_url ) . '</a>';
+                }
 
         $json  = json_decode( $gist_content, true );
         $html .= $json['div'];
@@ -68,11 +68,11 @@ function shortcode_gist($atts, $content=null) {
 
     } else {
 
-		$gist_url = $gist_url_base . '.js';
+                $gist_url = $gist_url_base . '.js';
         if ( $file !== null) {
-        	$gist_url .= '?file=' . $file;
+                $gist_url .= '?file=' . $file;
         }
-		$html .= '<script src="' . esc_url( $gist_url ) . '"></script>';
+                $html .= '<script src="' . esc_url( $gist_url ) . '"></script>';
 
     }
 

@@ -1,7 +1,7 @@
 === Gist for Robots Wordpress Plugin ===
 Contributors: Pedro Elsner
 Requires at least: 2.1
-Tested up to: 3.6
+Tested up to: 3.8
 Stable tag: trunk
 Tags: github, gist, shortcode, embed, git, code, script, gisthub
 
