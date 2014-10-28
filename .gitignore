@@ -1,3 +1,4 @@
 node_modules/
+.editorconfig
 Gruntfile.js
 readme.md
