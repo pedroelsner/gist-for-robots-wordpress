@@ -1,85 +1,38 @@
 <?php
-/*
-Plugin Name: Gist for Robots Wordpress Plugin
-Plugin URI: https://github.com/pedroelsner/gist-for-robots-wordpress
-Description: Makes embedding github.com gists SEO friendily and super awesomely easy.
-Usage: Drop in the embed code from github between the gist shortcode.
-[gist]<script src="http://gist.github.com/00000.js?file=file.txt"></script>[/gist]
-or
-[gist id=00000 file=file.txt]
-Version: 1.3
-Author: Pedro Elsner
-Author URI: http://pedroelsner.com/
-*/
+/**
+* Plugin Name: Gist for Robots Wordpress Plugin
+* Plugin URI: https://github.com/pedroelsner/gist-for-robots-wordpress
+* Description: Makes embedding github.com gists SEO friendily and super awesomely easy.
+* Usage: Drop in the embed code from github between the gist shortcode. [gist]<script src="http://gist.github.com/00000.js?file=file.txt"></script>[/gist] or [gist id=00000 file=file.txt]
+* Version: 1.3.1
+* Author: Pedro Elsner
+* Author URI: http://pedroelsner.com/
+**/
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+    die;
+}
 
 /**
- * Shortcode Gist
- *
- * @param array $atts Argumentos
- * @param string $content Conteúdo
- * @return string
+ * The core plugin class that is used to define internationalization,
+ * dashboard-specific hooks, and public-facing site hooks.
  */
-function shortcode_gist( $atts, $content=null ) {
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-gist-for-robots.php';
 
-    extract( shortcode_atts ( array(
-      'id' => null,
-      'file' => null,
-    ), $atts ) );
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_gist_for_robots() {
 
-    $pattern = "/gist\.github\.com\/([a-zA-Z0-9-]*)(?:\/?)([a-zA-Z0-9-]*)\.js/";
-    if ( $content != null && $id == null & preg_match( $pattern, $content, $matches ) ) {
-            $has_username = ( ! empty( $matches[2] ) );
-            if ( $has_username ) {
-                    $id = $matches[2];
-            } else {
-                    $id = $matches[1];
-            }
-        }
+    $plugin = new Gist_For_Robots();
+    $plugin->run();
 
-    $pattern = "/\?file=(\S+)\">/";
-    if ( $content != null && $file == null & preg_match( $pattern, $content, $matches ) ) {
-          $file = sanitize_file_name( $matches[1] );
-        }
-
-        // Simplistic ID validation
-        if ( $id == null || preg_match( '~([^a-z0-9]+)~', $id ) ) {
-                return 'Invalid Gist ID';
-        }
-
-        $gist_url_base = 'http://gist.github.com/' . $id;
-
-    $html = '<div class="gist-for-robots">';
-
-    if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'bot' ) !== false ) {
-
-        $gist_url = $gist_url_base . '.json';
-        $gist_url .= $file != null ? '?file=' . $file : '';
-
-                $gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
-                // If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
-                if ( is_wp_error( $gist_content ) ) {
-                        return '<a href="' . esc_url( $gist_url ) . '" title="'.$file.'">' . esc_html( $gist_url ) . '</a>';
-                }
-
-        $json  = json_decode( $gist_content, true );
-        $html .= $json['div'];
-        $html .= '<noscript>'.$json['div'].'</noscript>';
-
-    } else {
-
-                $gist_url = $gist_url_base . '.js';
-        if ( $file !== null) {
-                $gist_url .= '?file=' . $file;
-        }
-                $html .= '<script src="' . esc_url( $gist_url ) . '"></script>';
-
-    }
-
-    $html .= '</div>';
-
-    return $html;
 }
-add_shortcode( 'gist', 'shortcode_gist' );
-
-// EOF
+run_gist_for_robots();
