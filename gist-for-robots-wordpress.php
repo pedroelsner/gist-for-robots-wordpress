@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Gist for Boots Wordpress Plugin
+Plugin Name: Gist for Robots Wordpress Plugin
 Plugin URI: https://github.com/pedroelsner/gist-for-robots-wordpress
 Description: Makes embedding github.com gists SEO friendily and super awesomely easy.
 Usage: Drop in the embed code from github between the gist shortcode.
@@ -17,18 +17,18 @@ Author URI: http://pedroelsner.com/
  * Shortcode Gist
  *
  * @param array $atts Argumentos
- * @param string $content Conteúdo
+ * @param string $content ConteÃºdo
  * @return string
  */
-function shortcode_gist($atts, $content=null) {
+function shortcode_gist( $atts, $content=null ) {
 
-    extract(shortcode_atts(array(
+    extract( shortcode_atts ( array(
       'id' => null,
       'file' => null,
-    ), $atts));
+    ), $atts ) );
 
     $pattern = "/gist\.github\.com\/([a-zA-Z0-9-]*)(?:\/?)([a-zA-Z0-9-]*)\.js/";
-    if ($content != null && $id == null & preg_match($pattern, $content, $matches)) {
+    if ( $content != null && $id == null & preg_match( $pattern, $content, $matches ) ) {
             $has_username = ( ! empty( $matches[2] ) );
             if ( $has_username ) {
                     $id = $matches[2];
@@ -38,7 +38,7 @@ function shortcode_gist($atts, $content=null) {
         }
 
     $pattern = "/\?file=(\S+)\">/";
-    if ($content != null && $file == null & preg_match($pattern, $content, $matches)) {
+    if ( $content != null && $file == null & preg_match( $pattern, $content, $matches ) ) {
           $file = sanitize_file_name( $matches[1] );
         }
 
@@ -59,7 +59,7 @@ function shortcode_gist($atts, $content=null) {
                 $gist_content = wp_remote_retrieve_body( wp_remote_get( $gist_url ) );
                 // If there's an error getting the gist don't bother trying to handle the error, just dumbly return the gist URL as a link.
                 if ( is_wp_error( $gist_content ) ) {
-                        return '<a href="' . esc_url( $gist_url ) . '">' . esc_html( $gist_url ) . '</a>';
+                        return '<a href="' . esc_url( $gist_url ) . '" title="'.$file.'">' . esc_html( $gist_url ) . '</a>';
                 }
 
         $json  = json_decode( $gist_content, true );
@@ -80,6 +80,6 @@ function shortcode_gist($atts, $content=null) {
 
     return $html;
 }
-add_shortcode('gist', 'shortcode_gist');
+add_shortcode( 'gist', 'shortcode_gist' );
 
 // EOF
